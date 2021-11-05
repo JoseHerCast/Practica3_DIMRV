@@ -15,4 +15,17 @@ D:\Users\carro\Desktop\Proyectos_DIMRV\SDL_Prácticas\Modelos\Modelos\Modelos\ma
 D:\Users\carro\Desktop\Proyectos_DIMRV\SDL_Prácticas\Modelos\Modelos\Modelos\main.cpp(500,56): warning C4305: 'argumento': truncamiento de 'double' a 'float'
 D:\Users\carro\Desktop\Proyectos_DIMRV\SDL_Prácticas\Modelos\Modelos\Modelos\main.cpp(506,63): warning C4305: 'argumento': truncamiento de 'double' a 'float'
 D:\Users\carro\Desktop\Proyectos_DIMRV\SDL_Prácticas\Modelos\Modelos\Modelos\main.cpp(508,59): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+  model.cpp
+D:\Users\carro\Desktop\Proyectos_DIMRV\SDL_Prácticas\Modelos\Modelos\Modelos\model.cpp(70,23): warning C4018: '<': no coinciden signed/unsigned
+D:\Users\carro\Desktop\Proyectos_DIMRV\SDL_Prácticas\Modelos\Modelos\Modelos\model.cpp(77,34): warning C4244: 'argumento': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+D:\Users\carro\Desktop\Proyectos_DIMRV\SDL_Prácticas\Modelos\Modelos\Modelos\model.cpp(77,28): warning C4244: 'argumento': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+D:\Users\carro\Desktop\Proyectos_DIMRV\SDL_Prácticas\Modelos\Modelos\Modelos\model.cpp(77,22): warning C4244: 'argumento': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+D:\Users\carro\Desktop\Proyectos_DIMRV\SDL_Prácticas\Modelos\Modelos\Modelos\model.cpp(78,34): warning C4244: 'argumento': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+D:\Users\carro\Desktop\Proyectos_DIMRV\SDL_Prácticas\Modelos\Modelos\Modelos\model.cpp(78,28): warning C4244: 'argumento': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+D:\Users\carro\Desktop\Proyectos_DIMRV\SDL_Prácticas\Modelos\Modelos\Modelos\model.cpp(78,22): warning C4244: 'argumento': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+D:\Users\carro\Desktop\Proyectos_DIMRV\SDL_Prácticas\Modelos\Modelos\Modelos\model.cpp(79,34): warning C4244: 'argumento': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+D:\Users\carro\Desktop\Proyectos_DIMRV\SDL_Prácticas\Modelos\Modelos\Modelos\model.cpp(79,28): warning C4244: 'argumento': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+D:\Users\carro\Desktop\Proyectos_DIMRV\SDL_Prácticas\Modelos\Modelos\Modelos\model.cpp(79,22): warning C4244: 'argumento': conversión de 'double' a 'GLfloat'; posible pérdida de datos
+  Generando código...
+D:\Users\carro\Desktop\Proyectos_DIMRV\SDL_Prácticas\Modelos\Modelos\Modelos\model.cpp(64): warning C4715: 'obj3dmodel::readfile': no todas las rutas de acceso de control devuelven un valor
   Modelos.vcxproj -> D:\Users\carro\Desktop\Proyectos_DIMRV\SDL_Prácticas\Modelos\Modelos\Debug\Modelos.exe
