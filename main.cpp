@@ -36,22 +36,8 @@ int currentY=0, lastY=0;
 
 CCamera objCamera;	//Create objet Camera
 
-obj3dmodel modelo;
-
-
-//Picking por color
-GLubyte idSphere[3] = { 0x43, 0x77, 0xF8 };
-GLubyte idSphere2[3] = { 0x00 ,0x00 ,0x02 };
-GLubyte idCube[3] = { 0xB5, 0xC0, 0x08 };
-GLubyte idCube2[3] = { 0x20, 0X48, 0xE0 };
-GLubyte idCube3[3] = { 0xFF, 0x2D, 0x00 };
-GLubyte idCono1[3] = { 0x9C, 0xB7, 0x2F };
-GLubyte idCono2[3] = { 0x2C,0x46,0x50 };
-GLubyte idArco1[3] = { 0x00, 0xC4, 0xB3 };
-GLubyte idArco2[3] = { 0xE5, 0x9B, 0x29 };
-GLubyte idCilindro1[3] = { 0x97, 0x34, 0xB4 };
-
-GLubyte colorID[3];
+obj3dmodel corvette;
+obj3dmodel goku;
 
 //Variables para picking
 GLint viewport[4];
@@ -80,9 +66,12 @@ void Texture_Load() {
     t_sky2.LoadTGA("Textures/Sky/sky6.tga");
     t_sky2.BuildGLTexture();
     t_sky2.ReleaseImage();
-
 }
 
+void cargaModelos() {
+    corvette.readfile("Modelos/Corvette/corvette.obj");
+    goku.readfile("Modelos/Goku/goku.obj");
+}
 
 void fatalError(const char* error) {
     printf(error, "\n\nPresione cualquier tecla par salir...");
@@ -189,85 +178,23 @@ void sdlDisplay() {
 
     glPushMatrix(); //Se pinta el cielo
 
-        //sky_cube.skybox(10000.0, 5000.0, 5000.0, t_sky2.GLindex);
-
         sky_cube.skybox(10000.0, 5000.0, 5000.0, t_sky.GLindex);
 
-    glPopMatrix();
-
-    //Prueba de picking
-    glPushMatrix();
-    glColor3ub(idSphere[0], idSphere[1], idSphere[2]);
-    ejemplo.esfera(0.5, 15, 15, NULL);
     glPopMatrix();
 
     glPushMatrix();
     glScalef(3.0, 3.0, 3.0);
     glColor3f(0.5, 0.5, 0.5);
-    modelo.draw();
+    corvette.solidDraw();
+    //corvette.wireDraw();
     glPopMatrix();
 
     //glPushMatrix();
-    //glTranslatef(16.7, 15.75, 12);
-    //glColor3ub(idSphere2[0], idSphere2[1], idSphere2[2]);
-    //ejemplo.esfera(0.5, 15, 15, NULL);
-    //glPopMatrix();
-
-    //glPushMatrix();
-    //glTranslatef(20, -20, 15);
-    //glColor3ub(idCube[0], idCube[1], idCube[2]);
-    //ejemplo.prisma(10, 10, 10, NULL);
-    //glPopMatrix();
-
-    ////Cubo2
-    //glPushMatrix();
-    //glTranslatef(5, 5, 5);
-    //glColor3ub(idCube2[0], idCube2[1], idCube2[2]);
-    //ejemplo.prisma(2, 3, 5, NULL);
-    //glPopMatrix();
-
-    ////Cubo3
-    //glPushMatrix();
-    //glTranslatef(2, 0, 10);
-    //glColor3ub(idCube3[0], idCube3[1], idCube3[2]);
-    //ejemplo.prisma(3, 2, 3, NULL);
-    //glPopMatrix();
-
-    ////Cono2
-    //glPushMatrix();
-    //glTranslatef(-5, -5, -5);
-    //glRotatef(180, 1, 0, 0);
-    //glColor3ub(idCono1[0], idCono1[1], idCono1[2]);
-    //ejemplo.cono(4, 2, 10, NULL);
-    //glPopMatrix();
-
-    ////Cono3
-    //glPushMatrix();
-    //glTranslatef(15, -5, -10);
-    //glColor3ub(idCono2[0], idCono2[1], idCono2[2]);
-    //ejemplo.cono(5, 1, 10, NULL);
-    //glPopMatrix();
-
-    ////arco1
-    //glPushMatrix();
-    //glTranslatef(10, -5, 0);
-    //glColor3ub(idArco1[0], idArco1[1], idArco1[2]);
-    //ejemplo.arco(4, 2, 10, 10);
-    //glPopMatrix();
-
-    ////arco2
-    //glPushMatrix();
-    //glTranslatef(-5, 5, -2);
-    //glRotatef(180, 1, 1, 0);
-    //glColor3ub(idArco2[0], idArco2[1], idArco2[2]);
-    //ejemplo.arco(4, 2, 10, 10);
-    //glPopMatrix();
-
-    ////cilindro1
-    //glPushMatrix();
-    //glTranslatef(5, 0, -4);
-    //glColor3ub(idCilindro1[0], idCilindro1[1], idCilindro1[2]);
-    //ejemplo.cilindro(1, 2, 10, NULL);
+    //glTranslatef(10,0,0);
+    //glScalef(3.0, 3.0, 3.0);
+    //glColor3f(0.5, 0.5, 0.5);
+    //goku.solidDraw();
+    ////goku.wireDraw();
     //glPopMatrix();
 
     //Coordenadas
@@ -350,25 +277,6 @@ void picking_pipeline() {
     //Ahora hay que calcular la posición en el mundo real del objeto
 }
 
-void picking_color() {
-
-    glDisable(GL_TEXTURE_2D); 
- 
-    glGetIntegerv(GL_VIEWPORT, viewport);//{x,y,width,height} Retrieves The Viewport Values (X, Y, Width, Height)
-
-    mouse.x = lastX;    // Gets The Current Cursor Coordinates (Mouse Coordinates)
-    mouse.y = lastY;
-    ScreenToClient(hWnd, &mouse);
-
-    winX = (float)mouse.x;// Holds The Mouse X Coordinate
-    winY = (float)mouse.y;// Holds The Mouse Y Coordinate
-
-    winY = (float)viewport[3] - winY;// Subtract The Current Mouse Y Coordinate From The Screen Height.
-    
-    glReadPixels(winX, winY, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, colorID);
-    glEnable(GL_TEXTURE_2D);
-}
-
 
 void processInput() {
 
@@ -390,50 +298,7 @@ void processInput() {
           
             if (evnt.button.button == SDL_BUTTON_LEFT) {
                 picking_pipeline();
-                if (relX >= 14 && relX <= 26) {
-                    if (relY >= -26 && relY <= -14) {
-                        if (relZ >= 9 && relZ <= 21) {
-                            printf("\n\nSeleccionaste el cubo amarillo\n");
-                        }
-                    }
-                }
-                if (relX >= 3 && relX <= 7) {
-                    if (relY >= 2.5 && relY <= 7.5) {
-                        if (relZ >= -1 && relZ <= 11) {
-                            printf("\n\nSeleccionaste el cubo azul fuerte\n");
-                        }
-                    }
-                }
-                if (relX >= -0.5 && relX <= 4.5) {
-                    if (relY >= -2 && relY <= 2) {
-                        if (relZ >= 7.5 && relZ <= 12.5) {
-                            printf("\n\nSeleccionaste el cubo rojo\n");
-                        }
-                    }
-                }
-
-                picking_color();
-
-                if (colorID[0] == idSphere[0] && colorID[1] == idSphere[1] && colorID[2] == idSphere[2])
-                    printf("\n\nSe clickeo la esfera azul\n");
-                else if (colorID[0] == idSphere2[0] && colorID[1] == idSphere2[1] && colorID[2] == idSphere2[2])
-                    printf("\n\nSe clickeo la esfera negra\n");
-                else if (colorID[0] == idCono1[0] && colorID[1] == idCono1[1] && colorID[2] == idCono1[2])
-                    printf("\n\nSe clickeo el cono mostaza\n");
-                else if (colorID[0] == idCono2[0] && colorID[1] == idCono2[1] && colorID[2] == idCono2[2])
-                    printf("\n\nSe clickeo el cono gris\n");
-                else if (colorID[0] == idArco1[0] && colorID[1] == idArco1[1] && colorID[2] == idArco1[2])
-                    printf("\n\nSe clickeo el arco verde\n");
-                else if (colorID[0] == idArco2[0] && colorID[1] == idArco2[1] && colorID[2] == idArco2[2])
-                    printf("\n\nSe clickeo el arco anaranjado\n");
-                else if (colorID[0] == idCilindro1[0] && colorID[1] == idCilindro1[1] && colorID[2] == idCilindro1[2])
-                    printf("\n\nSe clickeo el cilindro  morado\n");
-
-                printf("\n*******************\nRColor: (%x,%x,%x)\n*******************\n\n",
-                    colorID[0],
-                    colorID[1],
-                    colorID[2]);
-
+                
                 printf("\n*******************\nRelative coordinates: (%.2lf,%.2lf,%.2lf)\n*******************\n\n",
                     relX,
                     relY,
@@ -545,7 +410,7 @@ int main(int argc, char **argv)
 
     initGL();
 
-    modelo.readfile("corvette.obj");
+    cargaModelos();
 
     sdlMainLoop();
 
