@@ -10,6 +10,18 @@
 #include <String.h>
 #include "model.h"
 
+/*NOTA:Por el momento, el cargador de modelos solo cuenta con las siguientes características.
+
+-Carga modelos de manera correcta siempre y cuando esten formados por primitivas triangulos.
+
+-A pesar que puede leer y almacenar las coordenadas de textura, no se implemento su reconocimiento en las
+caras ni su carga en memoria y por consiguiente en el modelo.
+
+-Se pueden implementar modelos de luz y material sin problemas ya que si se tomaron en cuenta las normales indicadas
+en cada cara
+
+*/
+
 #if (_MSC_VER >= 1900)
 #   pragma comment( lib, "legacy_stdio_definitions.lib" )
 #endif
@@ -38,6 +50,9 @@ CCamera objCamera;	//Create objet Camera
 
 obj3dmodel corvette;
 obj3dmodel goku;
+obj3dmodel test;
+//Modelo de prueba para mostrar como es que se cargan y dibujan los modelos que no estan formados por triangulos
+obj3dmodel tie; 
 
 //Variables para picking
 GLint viewport[4];
@@ -56,6 +71,23 @@ CTexture t_sky2; //Skybox
 
 CFiguras sky_cube;
 
+GLfloat l_pos[3] = {1000,1000,1000};
+GLfloat l_ambient[3] = {1.0,1.0,1.0};
+GLfloat l_diffuse[3] = { 1.0,1.0,1.0 };
+GLfloat l_specular[3] = { 1.0,1.0,1.0 };
+//Zafiro
+GLfloat m_ambient[3] = { 0.0215,0.1745,0.55};
+GLfloat m_diffuse[3]= { 0.7568,0.61424,0.55};
+GLfloat m_specular[3] = { 0.633,0.727811,0.55};
+GLfloat m_shininess= 76.8;
+//Rubi
+GLfloat w_ambient[3] = { 0.3745, 0.01175, 0.1 };
+GLfloat w_diffuse[3] = { 0.61424,0.04136,0.1};
+GLfloat w_specular[3] = { 0.727811,0.226959 ,0.1};
+GLfloat w_shininess = 76.8;
+
+GLfloat ambient[3] = {0.5,0.5,0.5};
+
 
 void Texture_Load() {
 
@@ -71,6 +103,8 @@ void Texture_Load() {
 void cargaModelos() {
     corvette.readfile("Modelos/Corvette/corvette.obj");
     goku.readfile("Modelos/Goku/goku.obj");
+    test.readfile("Modelos/test.obj");
+    tie.readfile("Modelos/Tie-Fighter.obj");
 }
 
 void fatalError(const char* error) {
@@ -136,6 +170,14 @@ void initGL(void)     // Inicializamos parametros
 	glLoadIdentity();
 
 
+    glEnable(GL_LIGHTING);
+    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambient);
+    glEnable(GL_LIGHT0);
+    glLightfv(GL_LIGHT0,GL_POSITION,l_pos);
+    glLightfv(GL_LIGHT0, GL_AMBIENT, l_ambient);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, l_diffuse);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, l_specular);
+
 
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);				// Negro de fondo
     glEnable(GL_TEXTURE_2D);
@@ -177,27 +219,44 @@ void sdlDisplay() {
         objCamera.mUp.x, objCamera.mUp.y, objCamera.mUp.z);
 
     glPushMatrix(); //Se pinta el cielo
-
+    glDisable(GL_LIGHTING);
         sky_cube.skybox(10000.0, 5000.0, 5000.0, t_sky.GLindex);
-
+    glEnable(GL_LIGHTING);
     glPopMatrix();
 
     glPushMatrix();
     glScalef(3.0, 3.0, 3.0);
     glColor3f(0.5, 0.5, 0.5);
-    corvette.solidDraw();
+    corvette.solidDraw(m_ambient,m_diffuse,m_specular,m_shininess);
     //corvette.wireDraw();
     glPopMatrix();
 
-    //glPushMatrix();
-    //glTranslatef(10,0,0);
-    //glScalef(3.0, 3.0, 3.0);
-    //glColor3f(0.5, 0.5, 0.5);
-    //goku.solidDraw();
-    ////goku.wireDraw();
-    //glPopMatrix();
+    glPushMatrix();
+    glTranslatef(10,0,0);
+    glScalef(3.0, 3.0, 3.0);
+    glColor3f(0.5, 0.5, 0.5);
+    goku.solidDraw(m_ambient, m_diffuse, m_specular, m_shininess);
+    //goku.wireDraw();
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(10, 0, 20);
+    glScalef(3.0, 3.0, 3.0);
+    glColor3f(0.5, 0.5, 0.5);
+    test.solidDraw(m_ambient, m_diffuse, m_specular, m_shininess);
+    //test.wireDraw();
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(-40, 0, -40);
+    glScalef(3.0, 3.0, 3.0);
+    glColor3f(0.5, 0.5, 0.5);
+    tie.solidDraw(w_ambient, w_diffuse, w_specular, w_shininess);
+    //tie.wireDraw();
+    glPopMatrix();
 
     //Coordenadas
+    glDisable(GL_LIGHTING);
     glPushMatrix();
     glColor3f(1.0, 0.0, 0.0);//Color rojo
     glBegin(GL_LINES);//Eje X
@@ -219,6 +278,7 @@ void sdlDisplay() {
     glVertex3f(0.0, 0.0, 100.0);
     glEnd();
     glPopMatrix();
+    glEnable(GL_LIGHTING);
 
     //Prueba de picking
     glPushMatrix();
